@@ -26,6 +26,8 @@ src="https://www.facebook.com/tr?id=1057053056700870&ev=PageView&noscript=1"
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800;900&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+<!-- تحميل الصورة الرئيسية (LP1.webp) بأولوية عالية حتى تظهر صفحة الهبوط بسرعة عند فتح الرابط -->
+<link rel="preload" as="image" href="LP1.webp">
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -667,7 +669,7 @@ src="https://www.facebook.com/tr?id=1057053056700870&ev=PageView&noscript=1"
 <!-- 2) صورة صفحة المنتج - الجزء الأول                              -->
 <!-- ============================================================ -->
 <section id="section-2-image1">
-    <img src=" LP1.webp" alt="HEXIN Foamy Cleaner - الجزء الأول" class="block w-full max-w-3xl sm:max-w-5xl mx-auto">
+    <img src="LP1.webp" alt="HEXIN Foamy Cleaner - الجزء الأول" class="block w-full max-w-3xl sm:max-w-5xl mx-auto" fetchpriority="high">
 </section>
 
 <!-- ============================================================ -->
@@ -1646,12 +1648,6 @@ src="https://www.facebook.com/tr?id=1057053056700870&ev=PageView&noscript=1"
 <!-- ===== Testimonials Lightbox Script ===== -->
 <script>
 (function(){
-  var images = [
-    '1.PNG',
-    '2.PNG',
-    '3.PNG',
-    '4.PNG'
-  ];
   var overlay  = document.getElementById('testiLightbox');
   var lbImage  = document.getElementById('lbImage');
   var lbCounter= document.getElementById('lbCounter');
@@ -1660,6 +1656,11 @@ src="https://www.facebook.com/tr?id=1057053056700870&ev=PageView&noscript=1"
   var btnPrev  = document.getElementById('lbPrev');
   var btnNext  = document.getElementById('lbNext');
   var cards    = document.querySelectorAll('#testiGrid .card');
+  // نبني قائمة الصور مباشرة من صور المصغّرات (thumbnails) الموجودة فعليا في الصفحة
+  // بدل كتابة أسماء الملفات يدويا، لتفادي أي اختلاف في الامتداد (jpeg/PNG) أو الاسم
+  var images = Array.prototype.map.call(cards, function(card){
+    return card.querySelector('img').getAttribute('src');
+  });
   var current  = 0;
 
   function show(index){
